@@ -32,7 +32,7 @@ exports.createUser = async (req, res) => {
       email: req.body.email,
       password: hash,
       events: {},
-    }();
+    };
     const dbUser = await Prisma.createUser(req.body.email, user);
 
     if (dbUser) {
@@ -57,6 +57,7 @@ exports.createUser = async (req, res) => {
       });
     }
   } catch (e) {
+    console.log(e);
     res.status(500).json({
       status: "error",
       data: {
