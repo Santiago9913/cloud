@@ -69,7 +69,7 @@ exports.getEvent = async (req, res, next) => {
 
 exports.getEvents = async (req, res, next) => {
   try {
-    const events = await Prisma.getEvents();
+    const events = await Prisma.getEvents(req.user.id);
 
     if (events) {
       return res.status(200).json({
@@ -161,6 +161,7 @@ exports.createEvent = async (req, res, next) => {
       },
     });
   } catch (e) {
+    console.log(e);
     return res.status(500).json({
       status: "error",
       data: {
