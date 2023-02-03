@@ -1,4 +1,3 @@
-const User = require("../models/User");
 const Prisma = require("../utils/dbHandler");
 const authentication = require("../utils/authHandler");
 const { v4: uuidv4 } = require("uuid");
@@ -27,7 +26,13 @@ exports.createUser = async (req, res) => {
 
     const id = uuidv4();
     const hash = await authentication.hashPassword(req.body.password);
-    const user = new User(id, req.body.name, req.body.email, hash, {});
+    const user = {
+      id: id,
+      name: req.body.name,
+      email: req.body.email,
+      password: hash,
+      events: {},
+    }();
     const dbUser = await Prisma.createUser(req.body.email, user);
 
     if (dbUser) {

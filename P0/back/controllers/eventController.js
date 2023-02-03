@@ -1,4 +1,3 @@
-const Event = require("../models/Event");
 const Prisma = require("../utils/dbHandler");
 const authentication = require("../utils/authHandler");
 const { v4: uuidv4 } = require("uuid");
@@ -119,18 +118,18 @@ exports.createEvent = async (req, res, next) => {
     const user = await Prisma.getUserById(req.user.id);
 
     const id = uuidv4();
-    const event = new Event(
-      id,
-      req.body.name,
-      req.body.category,
-      req.body.place,
-      req.body.address,
-      req.body.startDate,
-      req.body.endDate,
-      req.body.isVirtual,
-      user,
-      req.user.id
-    );
+    const event = {
+      id: id,
+      name: req.body.name,
+      category: req.body.category,
+      place: req.body.place,
+      address: req.body.address,
+      startDate: req.body.startDate,
+      endDate: req.body.endDate,
+      isVirtual: req.body.isVirtual,
+      owner: user,
+      ownerId: req.user.id,
+    };
 
     const dbEvent = await Prisma.createEvent(event);
 
