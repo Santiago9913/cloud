@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Category {
+  CONFERENCIA
+  SEMINARIO
+  CONGRESO
+  CURSO
+}
+
+model Event {
+  id        String  @id @unique
+  name      String  
+  category  Category
+  place     String
+  address   String
+  startDate DateTime
+  endDate   DateTime
+  isVirtual Boolean @default(false)
+  owner     User    @relation(fields: [ownerId], references: [id])
+  ownerId   String
+}
+
+model User {
+  id        String @id @unique
+  name      String
+  email     String @unique    
+  password  String
+  events    Event[]
+}
+
+
